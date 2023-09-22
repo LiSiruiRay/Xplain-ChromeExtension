@@ -1,8 +1,13 @@
 # extension
 
+This is how the chatting interface looks like:
 ![Bigger Pic](https://github.com/LiSiruiRay/Xplain-ChromeExtension/blob/main/README-resources/Bigger.png)
+
+Here I will provide two demos
 ![Demo1](https://github.com/LiSiruiRay/Xplain-ChromeExtension/blob/main/README-resources/demo_1.png)
 ![Demo1](https://github.com/LiSiruiRay/Xplain-ChromeExtension/blob/main/README-resources/demo_2.png)
+
+This is how the extension works under different language
 ![Demo1](https://github.com/LiSiruiRay/Xplain-ChromeExtension/blob/main/README-resources/Different_language.png)
 
 # **Xplain: Chrome Extension**
