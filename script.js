@@ -3,7 +3,6 @@ const msgerInput = get(".msger-input");
 const msgerChat = get(".msger-chat");
 import { getVideoID } from "./youtube_video.js";
 import { getCurrTime } from "./youtube_video.js";
-// require("dotenv").config();
 const url = "http://35.153.182.249:5000/questions"; // replace with your API endpoint
 const data = {
   transcript_id: "HFT_i4Q5dtM",
@@ -32,29 +31,23 @@ function convertToSeconds(timeString) {
   return totalSeconds;
 }
 
-async function test_api() {
-  try {
-    const videoId = await getVideoID();
-    const videoTime = await getCurrTime();
-    const timeSec = convertToSeconds(videoTime);
-    // console.log("Video ID:----", videoId);
-    data.transcript_id = videoId;
-    data.time_stamp = timeSec;
-  } catch (err) {
-    console.error(err);
-  }
-
+async function ask(videoID, timeStamp, question_text) {
   // try {
+  //   const videoId = await getVideoID();
   //   const videoTime = await getCurrTime();
-  //   console.log("curr time: ----", convertToSeconds(videoTime));
+  //   const timeSec = convertToSeconds(videoTime);
+  //   data.transcript_id = videoId;
+  //   data.time_stamp = timeSec;
   // } catch (err) {
   //   console.error(err);
   // }
-  // const vID = getVideoID();
-  // data.transcript_id = convertToSeconds(vID);
-  // console.log("datatatata: ", data);
+
+  data.transcript_id = videoID;
+  data.time_stamp = timeStamp;
+  data.question_text = question_text;
+
   try {
-    console.log("test_api called, data: ", data);
+    console.log("ask called, data: ", data);
     const response = await fetch(url, {
       method: "POST",
       headers: {
@@ -79,7 +72,6 @@ const BOT_MSGS = [
   "I feel sleepy! :(",
 ];
 
-// Icons made by Freepik from www.flaticon.com
 const BOT_IMG = "resources/image/cloud-2.png";
 const PERSON_IMG = "resources/image/cloud-2.png";
 const BOT_NAME = "BOT";
@@ -93,11 +85,11 @@ msgerForm.addEventListener("submit", async (event) => {
   if (!msgText) return;
   var resp = "";
   try {
-    const answer = await test_api();
+    const answer = await ask();
     console.log(answer);
     resp = answer;
   } catch (error) {
-    console.error("Error calling test_api:", error);
+    console.error("Error calling ask:", error);
   }
 
   console.log("res: ", resp);
@@ -131,15 +123,7 @@ function appendMessage(name, img, side, text) {
 }
 
 function botResponse(msgText) {
-  // const r = random(0, BOT_MSGS.length - 1);
-  // const msgText = BOT_MSGS[r];
   appendMessage(BOT_NAME, BOT_IMG, "left", msgText);
-  // const delay = msgText.split(" ").length * 100;
-  // console.log(msgText);
-
-  // setTimeout(() => {
-  //   appendMessage(BOT_NAME, BOT_IMG, "left", msgText);
-  // }, delay);
 }
 
 // Utils

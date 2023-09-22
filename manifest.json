@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Chat bot",
+  "name": "Xplain",
   "version": "1.0",
-  "description": "Chat bot",
+  "description": "Accelerate your learning process!",
   "permissions": ["activeTab"],
   "action": {
     "default_popup": "index.html"
