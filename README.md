@@ -1,5 +1,10 @@
 # extension
 
+![Bigger Pic](https://github.com/LiSiruiRay/Xplain-ChromeExtension/blob/main/README-resources/Bigger.png)
+![Demo1](https://github.com/LiSiruiRay/Xplain-ChromeExtension/blob/main/README-resources/demo_1.png)
+![Demo1](https://github.com/LiSiruiRay/Xplain-ChromeExtension/blob/main/README-resources/demo_2.png)
+![Demo1](https://github.com/LiSiruiRay/Xplain-ChromeExtension/blob/main/README-resources/Different_language.png)
+
 # **Xplain: Chrome Extension**
 
 This is a chrome extension version. The website version is located at: [here](https://xplain-website.vercel.app/). The website will only support a MIT open course.
