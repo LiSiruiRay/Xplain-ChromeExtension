@@ -1,6 +1,26 @@
-// content.js
+// function getVideoId() {
+//   const urlParams = new URLSearchParams(window.location.search);
+//   return urlParams.get("v");
+// }
 
-console.log("My extension is running on this page!");
+// function getCurrentTimestamp() {
+//   const videoElement = document.querySelector("video");
+//   return videoElement ? videoElement.currentTime : null;
+// }
 
-// Example: Change the background color of the website
-document.body.style.backgroundColor = "pink";
+// chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+//   if (request.action === "getVideoInfo") {
+//     sendResponse({
+//       videoId: getVideoId(),
+//       timestamp: getCurrentTimestamp(),
+//     });
+//   }
+// });
+
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request.action === "getVideoInfo") {
+    const timeElement = document.querySelector(".ytp-time-current");
+    const time = timeElement ? timeElement.textContent : null;
+    sendResponse({ currentTime: time });
+  }
+});
