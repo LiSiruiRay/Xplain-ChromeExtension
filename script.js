@@ -1,11 +1,13 @@
 const msgerForm = get(".msger-inputarea");
+// const msgerInput = get(".msger-input");
 const msgerInput = get(".msger-input");
+const originalInputElement = msgerInput.cloneNode(true);
 const msgerChat = get(".msger-chat");
 import { getVideoID } from "./youtube_video.js";
 import { getCurrTime } from "./youtube_video.js";
 const url = "http://35.153.182.249:5000/questions"; // replace with your API endpoint
 const data = {
-  transcript_id: "HFT_i4Q5dtM",
+  transcript_id: "X",
   time_stamp: 109,
   history_data: {},
   question_text: "What is the person talking about?",
@@ -32,16 +34,6 @@ function convertToSeconds(timeString) {
 }
 
 async function ask(videoID, timeStamp, question_text) {
-  // try {
-  //   const videoId = await getVideoID();
-  //   const videoTime = await getCurrTime();
-  //   const timeSec = convertToSeconds(videoTime);
-  //   data.transcript_id = videoId;
-  //   data.time_stamp = timeSec;
-  // } catch (err) {
-  //   console.error(err);
-  // }
-
   data.transcript_id = videoID;
   data.time_stamp = timeStamp;
   data.question_text = question_text;
@@ -79,27 +71,96 @@ const PERSON_NAME = "Sajad";
 
 msgerForm.addEventListener("submit", async (event) => {
   event.preventDefault();
+  msgerInput.replaceWith(originalInputElement);
   console.log("Event listener triggered");
+  console.log("check ori ele: ", originalInputElement);
 
   const msgText = msgerInput.value;
+  msgerInput.value = "";
+  console.log("aaaaa----------------checking msg: ", msgText);
   if (!msgText) return;
   var resp = "";
+
+  console.log("res: ", resp);
+
+  appendMessage(PERSON_NAME, PERSON_IMG, "right", msgText);
+
+  const img = document.createElement("img");
+  img.src = "./loading.gif";
+  img.width = 50; // Adjust width as needed
+  img.height = 50;
+  img.style.marginRight = "auto";
+  img.style.display = "block";
+  msgerInput.replaceWith(img);
+
+  // const inputElement = document.createElement("input");
+  // inputElement.type = "text";
+  // inputElement.className = "msger-input";
+  // inputElement.placeholder = "Enter your message...";
+  // const i2 = document.createElement("img");
+  // i2.src = "./loading.gif";
+  // i2.width = 100;
+  // msgerInput.replaceWith(originalInputElement);
+  // msgerInput.classList.add("new-class");
+  // msgerInput.classList.remove("msger-input");
+
+  // msgerInput.
+
+  var videoID = "";
+  var videoTime = "";
+
   try {
-    const answer = await ask();
+    const videoIDInner = await getVideoID();
+    videoID = videoIDInner;
+  } catch (error) {
+    botResponse(
+      "There is a problem happened while getting your video id, could you please try refresh?"
+    );
+    originalInputElement.value = "";
+    msgerInput.replaceWith(originalInputElement);
+    // replaceInputBack(msgerInput);
+    return;
+  }
+
+  try {
+    const videoTimeInner = await getCurrTime();
+    videoTime = convertToSeconds(videoTimeInner);
+  } catch (error) {
+    botResponse(
+      "There is a problem happened while getting your current video's time stamp, could you please try refresh?"
+    );
+    const inputElement = document.createElement("input");
+    // inputElement.type = "text";
+    // inputElement.class = "msger-input";
+    // inputElement.placeholder = "Enter your message...";
+    // msgerInput.replaceWith(inputElement);
+    // replaceInputBack(msgerInput);
+    return;
+  }
+
+  try {
+    const answer = await ask(videoID, videoTime, msgText);
     console.log(answer);
     resp = answer;
   } catch (error) {
     console.error("Error calling ask:", error);
   }
 
-  console.log("res: ", resp);
-
-  appendMessage(PERSON_NAME, PERSON_IMG, "right", msgText);
-  msgerInput.value = "";
-
   botResponse(resp.answer.content);
+  originalInputElement.value = "";
+  msgerInput.value = "";
+  // replaceInputBack(msgerInput);
   console.log("after call resp ", resp.answer.content);
 });
+
+function replaceInputBack(msgerInput) {
+  const inputElement = document.createElement("input");
+  inputElement.type = "text";
+  inputElement.className = "msger-input";
+  inputElement.placeholder = "Enter your message...";
+  inputElement.value = "";
+  msgerInput.replaceWith(inputElement);
+}
 
 function appendMessage(name, img, side, text) {
   //   Simple solution for small apps
